@@ -100,8 +100,8 @@ body {
       <div class="modal-body">
         <form action="/ecommerce/editFromProduct" style="max-height:400px" >
             <input type="hidden" name="productId" value="<%= rs.getString(1) %>" > 
-        	<input required type="text" class="form-control" placeholder="<%= rs.getString(2) %>" name="productName"><br>
-        	<input required class="form-control" placeholder="<%= rs.getString(3) %>" name="productDescription"><br>
+        	<input required type="text" class="form-control" value="<%= rs.getString(2) %>" name="productName"><br>
+        	<input required class="form-control" value="<%= rs.getString(3) %>" name="productDescription"><br>
         	<div class="form-inline">
 	        	<input required type="radio" name="productGender" class="form-control" value="Male">
 	        	<label for="productGenderMale">&nbsp&nbspMale</label>&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -116,11 +116,11 @@ body {
         		<option value="Footwear">Footwear</option>
         		<option value="Accessories">Accessories</option>
         	</select><br>
-        	<input required type="number" class="form-control" name="productQuantitySmall" placeholder="<%= rs.getString(6) %>"><br>
-        	<input required type="number" class="form-control" name="productQuantityMedium" placeholder="<%= rs.getString(7) %>"><br>
-        	<input required type="number" class="form-control" name="productQuantityLarge" placeholder="<%= rs.getString(8) %>"><br>
-        	<input required type="number" class="form-control" name="productPrice" placeholder="<%= rs.getString(10) %>"><br>
-        	<input required type="number" class="form-control" name="productDiscount" placeholder="<%= rs.getString(11) %>"><br>
+        	<input required type="number" class="form-control" name="productQuantitySmall" value="<%= rs.getString(6) %>"><br>
+        	<input required type="number" class="form-control" name="productQuantityMedium" value="<%= rs.getString(7) %>"><br>
+        	<input required type="number" class="form-control" name="productQuantityLarge" value="<%= rs.getString(8) %>"><br>
+        	<input required type="number" class="form-control" name="productPrice" value="<%= rs.getString(10) %>"><br>
+        	<input required type="number" class="form-control" name="productDiscount" value="<%= rs.getString(11) %>"><br>
         	<input type="hidden" name="productSoldBy" value= <%= session.getAttribute("adminEmail") %> ><br>
        <%
        }

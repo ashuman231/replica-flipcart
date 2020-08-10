@@ -134,7 +134,7 @@ if(session.getAttribute("adminEmail") != null){
         			
         			<div class="col-sm-8 col-sm-offset-2">
         				<div class="footer-border"></div>
-        				<p>Copyright 2018 E-Commerce</p>
+        				<p>Copyright 2020 E-Commerce</p>
         			</div>
         			
         		</div>

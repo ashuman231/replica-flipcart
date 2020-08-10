@@ -140,8 +140,8 @@ public String getDiscountedPrice(int op, int d){
 	PreparedStatement statement = con.prepareStatement("select * from products");
 	ResultSet rs = statement.executeQuery();
 	while(rs.next()){
-		Pattern p = Pattern.compile(request.getParameter("productSearch"));
-		Matcher m = p.matcher(rs.getString("productName"));
+		Pattern p = Pattern.compile(request.getParameter("productSearch").toLowerCase());
+		Matcher m = p.matcher(rs.getString("productName").toLowerCase());
 		if(m.find()==true){
 		%>
 		<div class="col-xl-3">

@@ -22,10 +22,11 @@ UserDao userDao;
 @Autowired
 AdminDao adminDao;
 
-	public void userSignup(User user) throws SQLException {
+	public boolean userSignup(User user) throws SQLException {
 		 System.out.println("service start");
-		userDao.userSignup(user);
 		 System.out.println("service start");
+		return userDao.userSignup(user);
+		
 	}
 	public boolean userLogin(User user, HttpSession session) throws SQLException {
 	    return userDao.userLogin(user,session);
@@ -43,10 +44,11 @@ AdminDao adminDao;
 		userDao.payment(req);
 		
 	}
-	public void adminSignup(Admin admin) throws SQLException {
+	public boolean adminSignup(Admin admin) throws SQLException {
 		System.out.println("service start");
-		adminDao.adminSignup(admin);
-		 System.out.println("service close");
+		System.out.println("service close");
+		return adminDao.adminSignup(admin);
+		 
 		
 	}
 	public boolean adminLogin(Admin admin, HttpSession session) throws SQLException {

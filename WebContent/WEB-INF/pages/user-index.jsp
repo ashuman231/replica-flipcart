@@ -30,9 +30,6 @@
 <body style="background-color: #ffffff;">
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color:#32127A;">
   <a class="navbar-brand" href="/ecommerce/user-index.jsp"><img alt="Logo" src="images/amazonlogowhite.png" style="" height="40px" width="180px"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
   	<form action="/ecommerce/search" class="form-inline mr-auto">
@@ -88,6 +85,9 @@
       <img class="d-block w-100" src="images/caraousel1.jpg" alt="Third slide">
     </div>
   </div>
+  <div class="carousel-item">
+      <img class="d-block w-100" src="images/caraousel3.jpg" alt="Third slide">
+    </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
@@ -97,7 +97,6 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-
 <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel" data-interval="4000">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators1" data-slide-to="0" class="active"></li>
@@ -109,7 +108,10 @@
       <img class="d-block w-100" src="images/caraousel13.jpg" alt="First slide">
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" src="images/caraousel11.jpg" alt="Third slide">
+      <img class="d-block w-100" src="images/caraousel11.jpg" alt="second slide">
+    </div>
+   <div class="carousel-item">
+      <img class="d-block w-100" src="images/caraousel12.jpg" alt="Third slide">
     </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators1" role="button" data-slide="prev">
@@ -120,15 +122,13 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
-</div>
-
+    </div>
 <%!
 public String getDiscountedPrice(int op, int d){
 	int dp = op - (op*d)/100;
 	return dp+"";
 }
 %>
-
 <div class="container" style="background-color:#ffffff">
 <br>
 	<p style="font-size:26px; color:#2f4f4f;font-family: 'Alegreya', serif;">Premium collection in Footwear</p>
@@ -158,8 +158,8 @@ public String getDiscountedPrice(int op, int d){
 			    <span style="font-size:12px"><%=rs.getString(11)%>% off</span>&nbsp&nbsp
 			    <span style="color:#32127A;font-weight:bold; font-size:22px">$<%=getDiscountedPrice(rs.getInt(10),rs.getInt(11)) %></span><br>
 			  </div>
-			</div>
-             </a>
+</div>
+</a>
 		</div>
 		<%
 	}
@@ -224,7 +224,45 @@ public String getDiscountedPrice(int op, int d){
 				%>
 		 <a href='/ecommerce/productDetails.jsp?productId=<%= rs2.getString(1)%>'>
 			<div class="card productbox" onmouseover="this.opacity=0.5" style="margin-bottom: 20px; width: 250px;">
-			  <img class="card-img-top" width="150px" height="200px" src="<%=productImagePath %>" alt="Card image cap">
+			  <img class="card-img-top" width="150px" height="200px" src="<%= productImagePath %>" alt="Card image cap">
+			 <div class="card-body" style="height:90px">
+			   <p style="font-style:italic;" class="card-text"><span style="font-weight:bold;color:red">"</span><%=rs2.getString(2) %><span style="font-weight:bold;color:red">"</span><br></p>
+			    <p style="font-style:italic;" class="card-text"><span style="font-weight:bold;color:red">"</span><%=rs2.getString(3) %><span style="font-weight:bold;color:red">"</span><br></p>
+			  </div>
+			  <div class="card-footer">
+			  <del style="text-decoration: line-through"> $<%=rs2.getString(10) %></del>
+			    <span style="font-size:12px"><%=rs2.getString(11)%>% off</span>&nbsp&nbsp
+			    <span style="color:#32127A;font-weight:bold; font-size:22px">$<%=getDiscountedPrice(rs2.getInt(10),rs2.getInt(11)) %></span><br>
+			  </div>
+			</div>
+			</a>
+		</div>
+		<%
+	}
+	con2.close();
+	%>		
+	</div>
+<br>
+</div>
+<div class="container" style="background-color:#ffffff">
+<br>
+	<p style="font-size:26px; color:#2f4f4f;font-family: 'Alegreya', serif;">Premium collection in Accessories</p>
+	<a href='/ecommerce/viewAll.jsp?productCategory=Accessories' style="text-align:right;">  <p  style="text-align:right;" > View all </p> </a>
+	<div class="row">
+	<%
+       con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
+          statement2 = con2.prepareStatement("select * from products where productCategory='Accessories' order by productId desc limit 4");
+	 rs2 = statement2.executeQuery();
+	while(rs2.next()){
+		%>
+		<div class="col-xl-3">
+		<%String productImagePath = rs2.getString(12);
+				if(productImagePath == null)
+					productImagePath = "images/" + "prdouctplaceholder.jpg";
+				%>
+		 <a href='/ecommerce/productDetails.jsp?productId=<%= rs2.getString(1)%>'>
+			<div class="card productbox" onmouseover="this.opacity=0.5" style="margin-bottom: 20px; width: 250px;">
+			  <img class="card-img-top" width="150px" height="200px" src="<%= productImagePath %>" alt="Card image cap">
 			 <div class="card-body" style="height:90px">
 			   <p style="font-style:italic;" class="card-text"><span style="font-weight:bold;color:red">"</span><%=rs2.getString(2) %><span style="font-weight:bold;color:red">"</span><br></p>
 			    <p style="font-style:italic;" class="card-text"><span style="font-weight:bold;color:red">"</span><%=rs2.getString(3) %><span style="font-weight:bold;color:red">"</span><br></p>

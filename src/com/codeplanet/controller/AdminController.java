@@ -25,9 +25,11 @@ UserService userService;
 	@PostMapping(value="/adminSignup" )
 	public String adminSignup(HttpServletRequest req,Admin admin ) throws SQLException
 	{  System.out.println("controller start for signup");
-		userService.adminSignup(admin);
+		if(userService.adminSignup(admin)==false)
+		req.setAttribute("message1","Warn:---- Email already exists.Use another email-id to sign-up for seller");	
+		else
+		req.setAttribute("message1","Warn:----  Signup Successfully for seller");
 		System.out.println("controller end for signup");
-		req.setAttribute("message1","Warn:----  Signup Successfully");
 		return "admin-login-signup";
 	}
 	@PostMapping(value="/adminLogin")

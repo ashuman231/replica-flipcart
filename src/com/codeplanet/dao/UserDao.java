@@ -21,7 +21,7 @@ import com.mysql.cj.protocol.ResultStreamer;
 public class UserDao {
 @Autowired
 JdbcTemplate jdbcTemplate;
- public void userSignup(User user) throws SQLException {
+ public boolean userSignup(User user) throws SQLException {
 	    System.out.println("dao start");
 		Connection con = jdbcTemplate.getDataSource().getConnection();
     /*	PreparedStatement pst = con.prepareStatement("insert into sdetails values(?,?,?,?)");
@@ -30,16 +30,33 @@ JdbcTemplate jdbcTemplate;
     	pst.setString(3,user.getEmailId());
     	pst.setString(4,user.getPassword());
     	pst.executeUpdate();*/
+		
+		// For checking purpose that email already exists or not  !!
+		String email = user.getUserEmail();
+		email = email.toLowerCase();
+		PreparedStatement pst1 = con.prepareStatement("select * from amazon.users");
+		ResultSet res = pst1.executeQuery();
+		while(res.next())
+		{
+			if(email.equals(res.getString("email"))==true)
+			return false;
+		}
+		pst1.close();
+		res.close();
+		
 		CallableStatement pst = con.prepareCall("call amazon.users(?,?,?,?)");
 		pst.setString(1,"insert");
-		pst.setString(2,user.getUserEmail());
+		pst.setString(2,user.getUserEmail().toLowerCase());
 		pst.setString(3,user.getUserPassword());
 		pst.setString(4,user.getUserName());
 		pst.executeUpdate();
+		pst.close();
     	System.out.println("dao end");
+    	return true;
 	}
 public boolean userLogin(User user, HttpSession session) throws SQLException {
 	String email = user.getUserEmail();
+	email = email.toLowerCase();
 	String password = user.getUserPassword();
 	boolean temp=false;
 	 try {
