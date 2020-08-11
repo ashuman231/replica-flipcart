@@ -28,8 +28,7 @@
 	}
 </style>
 </head>  
-<body style="background-color: #ffffff;">
-<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color:#32127A;">
+<body style="background-color: #ffffff;"><nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color:#32127A;">
   <a class="navbar-brand" href="/ecommerce/user-index.jsp"><img alt="Logo" src="images/amazonlogowhite.png" style="" height="40px" width="180px"></a>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -60,13 +59,18 @@
       		<%
       	}
       	%>
+        
       </li>
       &nbsp&nbsp&nbsp&nbsp
       <li class="nav-item active">
-       <a href="/ecommerce/userCart.jsp"> <button class="btn btn-md" data-toggle="modal" ><i class="fa fa-shopping-cart"></i></button> </a>
+       <a href="/ecommerce/userCart.jsp"> <button class="btn btn-md" data-toggle="modal" ><i class="fa fa-shopping-cart"></i> 
+        &nbsp<span style="font-size:15px;font-weight:bold;color:maroon;"> Cart </span></button> </a>
       </li>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    </ul>
   </div>
 </nav>
+
 <%!
 public String getDiscountedPrice(int op, int d) {
 		int dp = op - (op*d)/100;
@@ -165,4 +169,8 @@ public String getDiscountedPrice(int op, int d) {
 </div>
 		<br><br>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 </html>

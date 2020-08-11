@@ -104,7 +104,6 @@ body {
         		<option value="Topwear">Topwear</option>
         		<option value="Bottomwear">Bottomwear</option>
         		<option value="Footwear">Footwear</option>
-        		<option value="Accessories">Accessories</option>
         	</select><br>
         	<input required type="number" class="form-control" name="productQuantitySmall" placeholder="Quantity you have for small size"><br>
         	<input required type="number" class="form-control" name="productQuantityMedium" placeholder="Quantity you have for medium size"><br>

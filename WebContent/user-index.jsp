@@ -244,44 +244,7 @@ public String getDiscountedPrice(int op, int d){
 	</div>
 <br>
 </div>
-<div class="container" style="background-color:#ffffff">
-<br>
-	<p style="font-size:26px; color:#2f4f4f;font-family: 'Alegreya', serif;">Premium collection in Accessories</p>
-	<a href='/ecommerce/viewAll.jsp?productCategory=Accessories' style="text-align:right;">  <p  style="text-align:right;" > View all </p> </a>
-	<div class="row">
-	<%
-       con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-          statement2 = con2.prepareStatement("select * from products where productCategory='Accessories' order by productId desc limit 4");
-	 rs2 = statement2.executeQuery();
-	while(rs2.next()){
-		%>
-		<div class="col-xl-3">
-		<%String productImagePath = rs2.getString(12);
-				if(productImagePath == null)
-					productImagePath = "images/" + "prdouctplaceholder.jpg";
-				%>
-		 <a href='/ecommerce/productDetails.jsp?productId=<%= rs2.getString(1)%>'>
-			<div class="card productbox" onmouseover="this.opacity=0.5" style="margin-bottom: 20px; width: 250px;">
-			  <img class="card-img-top" width="150px" height="200px" src="<%= productImagePath %>" alt="Card image cap">
-			 <div class="card-body" style="height:90px">
-			   <p style="font-style:italic;" class="card-text"><span style="font-weight:bold;color:red">"</span><%=rs2.getString(2) %><span style="font-weight:bold;color:red">"</span><br></p>
-			    <p style="font-style:italic;" class="card-text"><span style="font-weight:bold;color:red">"</span><%=rs2.getString(3) %><span style="font-weight:bold;color:red">"</span><br></p>
-			  </div>
-			  <div class="card-footer">
-			  <del style="text-decoration: line-through"> $<%=rs2.getString(10) %></del>
-			    <span style="font-size:12px"><%=rs2.getString(11)%>% off</span>&nbsp&nbsp
-			    <span style="color:#32127A;font-weight:bold; font-size:22px">$<%=getDiscountedPrice(rs2.getInt(10),rs2.getInt(11)) %></span><br>
-			  </div>
-			</div>
-			</a>
-		</div>
-		<%
-	}
-	con2.close();
-	%>		
-	</div>
-<br>
-</div>
+
  <br><br><br>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.js"></script>
