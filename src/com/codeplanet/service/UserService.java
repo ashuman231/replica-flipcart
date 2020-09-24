@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,29 @@ AdminDao adminDao;
 	}
 	public void changeProductStatus(HttpServletRequest req) throws SQLException {
 		adminDao.changeProductStatus(req);
+		
+	}
+	public void userIndex(HttpServletRequest req, HttpServletResponse res) throws ClassNotFoundException, SQLException {
+		userDao.userIndex(req,res);
+		
+	}
+	public void adminIndex(HttpServletRequest req) throws ClassNotFoundException, SQLException {
+		adminDao.adminIndex(req);
+		
+	}
+	public void userCart(HttpServletRequest req) throws ClassNotFoundException, SQLException {
+		userDao.userCart(req);
+		
+	}
+	public void productDetails(HttpServletRequest req) throws ClassNotFoundException, SQLException {
+	userDao.productDetails(req);
+		
+	}
+	public void search(HttpServletRequest req) throws ClassNotFoundException, SQLException {
+		userDao.search(req);
+	}
+	public void userOrder(HttpServletRequest req) throws ClassNotFoundException, SQLException {
+		userDao.userOrder(req);
 		
 	}
 }

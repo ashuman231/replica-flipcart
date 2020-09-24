@@ -22,9 +22,9 @@
 
 <h1 style="color:blue; font-size:50px;">WELCOME ON OUR WEBPAGES(Flipcart Lite)</h1>
 <br><br><br><br><br><br><br><br><br><br>
-<a href="/ecommerce/user-index.jsp"> <button class="button button1">Users</button></a>
+<a href="/ecommerce/userIndex"> <button class="button button1">Users</button></a>
 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
- <a href="/ecommerce/admin-login-signup.jsp"><button class="button button2">Sellers</button></a>
+ <a href="/ecommerce/adminLoginSignup"><button class="button button2">Sellers</button></a>
 
 </body>
 </html>

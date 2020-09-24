@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.sql.*"%>
+    pageEncoding="ISO-8859-1" import="java.util.*"%>
 <!DOCTYPE html>
 <%
 if(session.getAttribute("adminEmail") == null){
@@ -110,48 +110,37 @@ body {
 </nav>
 
 <br>
-<%!
-public String getDiscountedPrice(int op, int d){
-	int dp = op - (op*d)/100;
-	return dp+"";
-}
-%>
-<%
-Class.forName("com.mysql.jdbc.Driver"); 
-Connection  con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-PreparedStatement statement = con.prepareStatement("select * from products where productSoldBy=?");
-statement.setString(1, session.getAttribute("adminEmail").toString());
-ResultSet rs = statement.executeQuery();
-%>
+
 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="color:red; font-size:30px;"> Products that you wanna sell: </span><br><br>
 <div class="container" style="background-color: #ffffff">
 	<br>
 	<div class="row">
 		<%
-		while(rs.next()){
+		ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("adminIndex");
+		ListIterator<ArrayList<String>> lt1 = list.listIterator();
+		while(lt1.hasNext())
+		{
+		ListIterator<String>lt = lt1.next().listIterator();
+		while(lt.hasNext())
+	    {
 			%>
 			<div class="col-xl-3">
 				<div class="card productdisplayshadow" style="margin-bottom: 20px;height: 480px; width: 100%;">
-                <%String productImagePath = rs.getString(12);
-				if(productImagePath == null)
-					productImagePath = "images/" + "productplaceholder.jpg";
-		      	%>
-		           <div class="card-body">
-		            <img class="card-img-top" height="120px" src="<%=productImagePath %>" alt="Card image cap">
-				    <h5 class="card-title"><%= rs.getString(2)  %></h5>
-				    <p class="card-text">" <%= rs.getString(3) %>"<br>
-				    <del style="text-decoration: line-through"> $<%=rs.getString(10) %></del>
-				    <span style="font-size:12px"><%=rs.getString(11) %>% off</span>&nbsp&nbsp
-				    <span style="font-weight:bold; font-size:22px">$<%=getDiscountedPrice(rs.getInt(10),rs.getInt(11)) %></span><br>
-				    Quantity Left: <span style="font-size:18px ;font-weight:bold;"><%=(rs.getInt(6) + rs.getInt(7) + rs.getInt(8)) %></span></p>
+                   <div class="card-body">
+		            <img class="card-img-top" height="120px" src="<%=lt.next()%>" alt="Card image cap">
+				    <h5 class="card-title"><%=lt.next()%></h5>
+				    <p class="card-text">" <%=lt.next()%>"<br>
+				    <del style="text-decoration: line-through"> $<%=lt.next()%></del>
 				  </div>
+				  <% int productId = Integer.parseInt(lt.next());
+				  %>
 				  <div class="card-footer">
-				  	            <form action="/ecommerce/edit.jsp?" class="btn btn-info btn-sm">
-						      <input type="hidden" name="productId" value=<%=rs.getString(1) %> />
+				  	            <form action="/ecommerce/edit" class="btn btn-info btn-sm">
+						      <input type="hidden" name="productId" value=<%=productId%> />
 				   <button class="btn btn-info btn-sm" type="submit">Edit</button>
 						         </form>
 				               <form action="/ecommerce/deleteFromProduct" class="btn btn-danger btn-sm">
-						      <input type="hidden" name="productId" value=<%=rs.getString(1) %> /> 
+						      <input type="hidden" name="productId" value=<%=productId%> /> 
 				   <button class="btn btn-danger btn-sm" type="submit">Delete</button>
 						         </form>
 				  </div>          
@@ -159,7 +148,7 @@ ResultSet rs = statement.executeQuery();
 			</div>
 			<%
 		}
-		con.close();
+		}
 		%>
 		
 		<!-- -- for adding a new product! -->

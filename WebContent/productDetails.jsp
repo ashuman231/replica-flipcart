@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.sql.*"%>
+    pageEncoding="UTF-8" import="java.util.*"%>
     
 <!DOCTYPE html>
 <html>
@@ -30,7 +30,7 @@
 </head>  
 <body style="background-color: #ffffff;">
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color:#32127A;">
-  <a class="navbar-brand" href="/ecommerce/user-index.jsp"><img alt="Logo" src="images/amazonlogowhite.png" style="" height="40px" width="180px"></a>
+  <a class="navbar-brand" href="/ecommerce/userIndex"><img alt="Logo" src="images/amazonlogowhite.png" style="" height="40px" width="180px"></a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -52,7 +52,6 @@
           <i class="fa fa-user-circle"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item">Profile</a>
           <a class="dropdown-item" href="/ecommerce/userOrder.jsp">Orders</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/ecommerce/userLogout">Logout</a>
@@ -68,51 +67,41 @@
       </li>
   </div>
 </nav>
-<%!
-public String getDiscountedPrice(int op, int d) {
-		int dp = op - (op*d)/100;
-		return dp+"";
-	}
-%>
 <br><br>
            <%
-
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-			PreparedStatement statement = con.prepareStatement("select * from products where productId=?");
-			statement.setString(1,request.getParameter("productId"));
-			ResultSet rs = statement.executeQuery();
-			rs.next();
-			String productImagePath = rs.getString(12);
-			if(productImagePath == null)
-				productImagePath = "images/" + "prdouctplaceholder.jpg";
-	      	%>
+           ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("footWear");
+       	ListIterator<ArrayList<String>> lt1 = list.listIterator();
+       	while(lt1.hasNext())
+       	{
+       	ListIterator<String>lt = lt1.next().listIterator();
+       	while(lt.hasNext())
+       	{
+       	  int productId =  Integer.parseInt(lt.next());	
+           %>
 			<div class="container">
 			<div class="row"> 
 			<div class=col-lg-4>
-		    <img src=<%= productImagePath  %>  height="250px" width="200px"> 
+		    <img src=<%=lt.next()%>  height="250px" width="200px"> 
 			</div>
 			<div class=col-lg-8>
-			<span style="font-weight:bold font-size:28px color:#32127A"" ><%= rs.getString(2)%>  </span><br>
-			<span style=""> <%= rs.getString(3)%>  </span><br><br>
+			<span style="font-weight:bold font-size:28px color:#32127A"" ><%=lt.next()%>  </span><br>
+			<span style=""> <%=lt.next()%>  </span><br><br>
 			<span>it is the vary beautiful dress about that!<br>
 			you can take it by only simply click on add to cart button!<br>
 			and further follow the next instruction.
 			</span><br><br>
-			<span><del style="text-decoration:line-through">$ <%= rs.getString(10)%></del></span> &nbsp&nbsp
-			<span style="color:red"> <%= rs.getString(11) %>off</span> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-			<span style="font-size:28px; color:#32127A">$<%=  getDiscountedPrice(rs.getInt(10),rs.getInt(11)) %></span><br><br>
+			<span><del style="text-decoration:line-through">$ <%=Integer.parseInt(lt.next())%></del></span> &nbsp&nbsp
 			<form action="/ecommerce/addToCart" >
-			<input type="hidden" name="productId" value=<%= rs.getString(1)%> >
+			<input type="hidden" name="productId" value=<%=productId%> >
 			<select name="productSize" class="form-control" placeholder="select your size" required> 
 						      	<option>Small</option>
 						      	<option>Medium</option>  
 						      	<option>Large</option> 
-					            </select><br>
+		   </select><br>
 			<p id='addtocarterror' style='color:red'></p>
 			<button type="submit" class="btn btn-md btn-info"><i class="fa fa-shopping-cart"></i>&nbsp&nbspAdd item to cart</button>
 			</form>
-			<% con.close(); %>
+			<% }} %>
         </div>
 		</div>
 		</div>

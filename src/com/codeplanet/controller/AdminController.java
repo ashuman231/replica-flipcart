@@ -33,21 +33,18 @@ UserService userService;
 		return "admin-login-signup";
 	}
 	@PostMapping(value="/adminLogin")
-	public void adminLogin(Admin admin, HttpSession session,HttpServletRequest req,HttpServletResponse res) throws SQLException, ServletException, IOException
+	public String adminLogin(Admin admin, HttpSession session,HttpServletRequest req,HttpServletResponse res) throws SQLException, ServletException, IOException
 	{  System.out.println("controller start for login");
 	   if(userService.adminLogin(admin,session)==true)
 	   { 
 		   System.out.println("login successful");
-		   RequestDispatcher requestDispatcher = req.getRequestDispatcher("admin-index.jsp");
-		   
-	       requestDispatcher.forward(req,res);
+		   return "admin-index";
 		 
 	   }
 	   else
 	   {  System.out.println("login failed");
 	      req.setAttribute("message","Warn:----  Invalid Credential");
-	      RequestDispatcher requestDispatcher = req.getRequestDispatcher("admin-login-signup.jsp");
-          requestDispatcher.forward(req,res);
+	      return "admin-login-signup";
 	   }
 	}
 	@RequestMapping(value="/adminLogout")
@@ -91,6 +88,14 @@ UserService userService;
     	userService.changeProductStatus(req);
     	return "adminOrder";
     }
+    @RequestMapping(value="/adminIndex" )
+    public String adminIndex(HttpServletRequest req) throws SQLException, ServletException, IOException, ClassNotFoundException
+    {
+    	
+    	userService.adminIndex(req);
+    	return "admin-index";
+    }
     
+  
   
 }

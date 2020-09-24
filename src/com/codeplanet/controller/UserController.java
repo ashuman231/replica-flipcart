@@ -53,6 +53,9 @@ UserService userService;
 	  return "user-index";
 	}
 	
+	
+	
+	// Business Logic
 	@RequestMapping(value="/addToCart")
 	public String addToCart(HttpServletRequest req) throws ClassNotFoundException, SQLException
 	{   if(req.getSession().getAttribute("userEmail")==null)
@@ -74,10 +77,43 @@ UserService userService;
 		return "userOrder";	
 	}
 	@RequestMapping(value="/search")
-	public void search(HttpServletRequest req,HttpServletResponse res) throws ServletException, IOException 
+	public String search(HttpServletRequest req,HttpServletResponse res) throws ServletException, IOException, ClassNotFoundException, SQLException 
+	{
+	userService.search(req);
+	return "search";
+	}
+	/*
+	@RequestMapping(value="/userIndex")
+	public void userIndex(HttpServletRequest req,HttpServletResponse res) throws ServletException, IOException 
 	{
 	 RequestDispatcher rsd = req.getRequestDispatcher("search.jsp?productSearch="+req.getParameter("productSearch").toString());
 	 rsd.forward(req, res);
 	}
+	*/
+	@RequestMapping(value="/userIndex")
+	public String userIndex(HttpServletRequest req,HttpServletResponse res) throws ServletException, IOException, ClassNotFoundException, SQLException 
+	{
+	 userService.userIndex(req,res);
+	 return "user-index";
+	}
+	@RequestMapping(value="/userCart")
+	public String userCart(HttpServletRequest req) throws ServletException, IOException, ClassNotFoundException, SQLException 
+	{
+	 userService.userCart(req);
+	 return "userCart";
+	}
+	@RequestMapping(value="/productDetails")
+	public String productDetails(HttpServletRequest req) throws ServletException, IOException, ClassNotFoundException, SQLException 
+	{
+	 userService.productDetails(req);
+	 return "productDetails";
+	}
+	@RequestMapping(value="/userOrder")
+	public String userOrder(HttpServletRequest req) throws ServletException, IOException, ClassNotFoundException, SQLException 
+	{
+	 userService.userOrder(req);
+	 return "userOrder";
+	}
 	
 }
+

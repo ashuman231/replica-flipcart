@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.sql.*"%>
+    pageEncoding="UTF-8" import="java.util.*"%>
     
 <!DOCTYPE html>
 <html>
@@ -50,7 +50,6 @@
           <i class="fa fa-user-circle"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item">Profile</a>
           <a class="dropdown-item" href="/ecommerce/userOrder.jsp">Orders</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/ecommerce/userLogout">Logout</a>
@@ -71,12 +70,6 @@
   </div>
 </nav>
 
-<%!
-public String getDiscountedPrice(int op, int d) {
-		int dp = op - (op*d)/100;
-		return dp+"";
-	}
-%>
 <br><br>
         
 <!-------------   Cart Modal ------------------>
@@ -93,11 +86,6 @@ public String getDiscountedPrice(int op, int d) {
 	      } else {
 	    	  %>
 	    	  <%
-	    	  Class.forName("com.mysql.jdbc.Driver");
-			 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-			  PreparedStatement statement = con.prepareStatement("select * from carts where cartEmail=?");
-			  statement.setString(1,(String)session.getAttribute("userEmail"));
-			  ResultSet rs = statement.executeQuery();
 			  int total = 0;
 	    	  %>
 	    	    <div class="modal-header">
@@ -118,34 +106,31 @@ public String getDiscountedPrice(int op, int d) {
 					      </tr>
 					    </thead>
 					    <tbody>
-		        	<%
-		        	while(rs.next()){
-		        		%>
-						<%
-						PreparedStatement statement1 = con.prepareStatement("select * from products where productId=?");
-						statement1.setString(1, rs.getString(3));
-						ResultSet rs1 = statement1.executeQuery();
-						rs1.next();
-						total += Integer.parseInt(getDiscountedPrice(rs1.getInt(10),rs1.getInt(11)));
-						%>
-						<%
-                         String productImagePath = rs1.getString("productImagePath");
-				         if(productImagePath == null)
-					     productImagePath = "images/" + "prdouctplaceholder.jpg";
+		        		<%
+		        		ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("userCart");
+		        		ListIterator<ArrayList<String>> lt1 = list.listIterator();
+		        		while(lt1.hasNext())
+		        		{
+		        		ListIterator<String>lt = lt1.next().listIterator();
+		        		while(lt.hasNext())
+		        		{
                           %>
 						<tr>
-						<td style="width:150px"><img class="" height="70px" src="<%=productImagePath %>" alt="Card image cap"></td>
-						<td><%=rs1.getString(2) %></td>
-						<td>$<%=getDiscountedPrice(rs1.getInt(10),rs1.getInt(11)) %></td>
-						<td><%=rs.getString(4) %></td>
+						<td style="width:150px"><img class="" height="70px" src="<%=lt.next()%>" alt="Card image cap"></td>
+						<td><%=lt.next()%></td>
+						<% int price = Integer.parseInt(lt.next());
+						
+						total += price ;%>
+						<td>$<%=price%></td>
 						<td><form action="deleteFromCart" class="btn btn-sm btn-danger">
-						      <input type="hidden" name="cartId" value=<%=rs.getString(1) %> /> 
+						      <input type="hidden" name="cartId" value=<%=Integer.parseInt(lt.next())%> /> 
 						        <button type="submit">Remove</button>
 						         </form>
 						</td>
 						</tr>										
 		        		<%
 		        	}
+		        		}
 		        	%>
 		        	</tbody>
 		        	</table>
@@ -161,7 +146,6 @@ public String getDiscountedPrice(int op, int d) {
 		        %>
 		        </div>	  
 	    	  <%
-	    	  con.close();
 	      }
 	      %>
     </div>

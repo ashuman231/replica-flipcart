@@ -105,11 +105,7 @@ body {
         		<option value="Bottomwear">Bottomwear</option>
         		<option value="Footwear">Footwear</option>
         	</select><br>
-        	<input required type="number" class="form-control" name="productQuantitySmall" placeholder="Quantity you have for small size"><br>
-        	<input required type="number" class="form-control" name="productQuantityMedium" placeholder="Quantity you have for medium size"><br>
-        	<input required type="number" class="form-control" name="productQuantityLarge" placeholder="Quantity you have for large size"><br>
         	<input required type="number" class="form-control" name="productPrice" placeholder="Price of the product"><br>
-        	<input required type="number" class="form-control" name="productDiscount" placeholder="Discount on product(%)"><br>
         	 <input required type="file"   class="form-control" name="productImagePath" placeholder="enter jpg file format that you wanna show" > <br>
         	<input type="hidden" name="productSoldBy" value=<%= session.getAttribute("adminEmail") %> ><br>
             <div class="modal-footer">
@@ -117,9 +113,5 @@ body {
        	     </form>
             </div>
 <br><br>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 </body>
 </html>
