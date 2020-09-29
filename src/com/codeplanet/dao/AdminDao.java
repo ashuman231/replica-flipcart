@@ -189,8 +189,35 @@ JdbcTemplate jdbcTemplate;
 			temp.add(res.getString(2)); // name
 			temp.add(res.getString(3)); // desc
 			temp.add(Integer.toString(res.getInt(7)));  // price
-			temp.add(res.getString(1));
+			temp.add(res.getString(1)); // productId
 			
+			list.add(temp);
+		}
+     return list;
+	}
+
+	public void adminOrder(HttpServletRequest req) throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
+		PreparedStatement statement = con.prepareStatement("select * from orders where productSoldBy=?");
+		statement.setString(1, req.getSession().getAttribute("adminEmail").toString());
+		ResultSet res1 = statement.executeQuery();	
+		ArrayList<ArrayList<String>>adminOrder =  attributeForAdminOrders(res1);
+		req.getSession().setAttribute("adminOrder",adminOrder);
+
+	}
+
+	private ArrayList<ArrayList<String>> attributeForAdminOrders(ResultSet res) throws SQLException {
+		ArrayList<ArrayList<String>>list = new ArrayList<ArrayList<String>>();
+		while(res.next())
+		{
+			ArrayList<String>temp = new ArrayList<String>();
+			temp.add(res.getString("productImagePath")); // Image
+			temp.add(res.getString("productName"));
+			temp.add(Integer.toString(res.getInt("productPrice"))); // name
+			temp.add(res.getString("productSize")); 
+			temp.add(res.getString("orderId"));
+			temp.add(res.getString("productStatus"));
 			list.add(temp);
 		}
      return list;

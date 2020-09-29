@@ -92,7 +92,6 @@ body {
           <i class="fa fa-user-circle"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item">Profile</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/ecommerce/adminLogout">Logout</a>
         </div>
@@ -101,7 +100,7 @@ body {
       </li>
       &nbsp&nbsp&nbsp&nbsp
       <li class="nav-item active">
-       <a href="/ecommerce/adminOrder.jsp"> <button class="btn btn-md" data-toggle="modal" ><i class="fa fa-shopping-cart"></i> 
+       <a href="/ecommerce/adminOrder"> <button class="btn btn-md" data-toggle="modal" ><i class="fa fa-shopping-cart"></i> 
         &nbsp<span style="font-size:15px;font-weight:bold;color:maroon;">Orders </span></button> </a>
       </li>
       &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp

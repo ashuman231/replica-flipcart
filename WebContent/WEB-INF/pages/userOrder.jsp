@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.sql.*"%>
 <%@ page import="java.util.*" %>
+<%
+if(session.getAttribute("userEmail")==null)
+	response.sendRedirect("user-login-signup.jsp");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +20,7 @@
 <body>
 
 <div class="text-center" style="background-color:#32127A">
-<a style="padding-top:15px; padding-bottom:15px;" class="navbar-brand mr-auto" href="/ecommerce/user-index.jsp"><img alt="Logo" src="images/amazonlogowhite.png" style="" height="40px" width="180px"></a>
+<a style="padding-top:15px; padding-bottom:15px;" class="navbar-brand mr-auto" href="/ecommerce/userIndex"><img alt="Logo" src="images/amazonlogowhite.png" style="" height="40px" width="180px"></a>
 </div>
 <br><br>
 
@@ -24,23 +28,9 @@
 	<h2 style="font-family: 'Merriweather', serif;">Your orders</h2>
 </div>
 <br><br>
-<%!
-public String getDiscountedPrice(int op, int d){
-	int dp = op - (op*d)/100;
-	return dp+"";
-}
-%>
-<%
-Class.forName("com.mysql.jdbc.Driver");
-Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-PreparedStatement statement = con.prepareStatement("select * from orders where userEmail=? and productStatus=?");
-statement.setString(1, session.getAttribute("userEmail").toString());
-statement.setString(2,"pending");
 
-ResultSet res = statement.executeQuery();
-%>
 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-<Strong class="btn btn-danger btn-sm">Pending Order:-</Strong>
+<Strong class="btn btn-danger btn-sm">Order:-</Strong>
 <div class="container">
 
 	<div class="card">
@@ -54,79 +44,32 @@ ResultSet res = statement.executeQuery();
 							<th>Price</th>
 							<th>Size</th>
 							<th>status</th>
+							<th>Count</th>
+							
 						</tr>
 					</thead>
 					<%
-                        while(res.next())
-                      {
+					ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("userOrder");
+					ListIterator<ArrayList<String>> lt1 = list.listIterator();
+					while(lt1.hasNext())
+					{
+					ListIterator<String>lt = lt1.next().listIterator();
+					while(lt.hasNext())
+					{
 	                %>
 					<tbody>
 						<tr>
-<%
-                 String productImagePath = res.getString("productImagePath");
-				if(productImagePath == null)
-					productImagePath = "images/" + "prdouctplaceholder.jpg";
-%>
-							<td style="width:150px"><img class="" height="70px" src="<%=productImagePath %>" alt="Card image cap"></td>
-							<td style="vertical-align:middle"><%=res.getString("productName") %></td>
-							<td style="vertical-align:middle"><%= getDiscountedPrice(res.getInt("productPrice"),res.getInt("productDiscount")) %></td>
-							<td style="vertical-align:middle"><%= res.getString("productSize") %></td>
-							<td style="vertical-align:middle"><span style="font-size:22px;font-weight:bold;color:blue"><%= res.getString("productStatus") %></span> </td>
+							<td style="width:150px"><img class="" height="70px" src="<%=lt.next()%>" alt="Card image cap"></td>
+							<td style="vertical-align:middle"><%=lt.next()%></td>
+							<td style="vertical-align:middle"><%=lt.next()%></td>
+							<td style="vertical-align:middle"><%=lt.next()%></td>
+							<td style="vertical-align:middle"><span style="font-size:22px;font-weight:bold;color:blue"><%=lt.next()%></span> </td>
+							<td style="vertical-align:middle"><%=lt.next()%></td>
 						</tr>
 						
 						<%
 					}
-					%>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div><br>
-</div>
-
-<%
-statement = con.prepareStatement("select * from orders where userEmail=? and productStatus=?");
-statement.setString(1, session.getAttribute("userEmail").toString());
-statement.setString(2,"placed");
-res = statement.executeQuery();
-%>
-&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-<Strong class="btn btn-info btn-sm">Placed Order:-</Strong>
-<div class="container">
-	<div class="card">
-		<div class="card-body">
-			<div>
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th >Product</th>
-							<th>Name</th>
-							<th>Price</th>
-							<th>Size</th>
-							<th>status</th>
-						</tr>
-					</thead>
-					<%
-                        while(res.next())
-                      {
-	                %>
-					<tbody>
-						<tr>
-<%
-                 String productImagePath = res.getString("productImagePath");
-				if(productImagePath == null)
-					productImagePath = "images/" + "prdouctplaceholder.jpg";
-%>
-							<td style="width:150px"><img class="" height="70px" src="<%=productImagePath %>" alt="Card image cap"></td>
-							<td style="vertical-align:middle"><%=res.getString("productName") %></td>
-							<td style="vertical-align:middle"><%= getDiscountedPrice(res.getInt("productPrice"),res.getInt("productDiscount")) %></td>
-							<td style="vertical-align:middle"><%= res.getString("productSize") %></td>
-							<td style="vertical-align:middle"><span style="font-size:22px;font-weight:bold;color:blue"><%= res.getString("productStatus") %></span> </td>
-						</tr>
-						
-						<%
 					}
-                 con.close();
 					%>
 					</tbody>
 				</table>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.sql.*"%>
+    pageEncoding="ISO-8859-1" import="java.util.*"%>
 <%@ page import="java.util.*" %>
 <% 
 if(session.getAttribute("adminEmail")==null)
@@ -28,23 +28,8 @@ if(session.getAttribute("adminEmail")==null)
 	<h2 style="font-family: 'Merriweather', serif;">Order You Received from Customers :----</h2>
 </div>
 <br><br>
-<%!
-public String getDiscountedPrice(int op, int d){
-	int dp = op - (op*d)/100;
-	return dp+"";
-}
-%>
-<%
-Class.forName("com.mysql.jdbc.Driver");
-Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-PreparedStatement statement = con.prepareStatement("select * from orders where productSoldBy=? and productStatus=?");
-statement.setString(1, session.getAttribute("adminEmail").toString());
-statement.setString(2,"pending");
-
-ResultSet res = statement.executeQuery();
-%>
 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-<Strong class="btn btn-danger btn-sm">Pending Order:-</Strong>
+<Strong class="btn btn-danger btn-sm">Order:-</Strong>
 <div class="container">
 
 	<div class="card">
@@ -61,25 +46,24 @@ ResultSet res = statement.executeQuery();
 						</tr>
 					</thead>
 					<%
-                        while(res.next())
-                      {
-	                %>
+					ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("adminOrder");
+					ListIterator<ArrayList<String>> lt1 = list.listIterator();
+					while(lt1.hasNext())
+					{
+					ListIterator<String>lt = lt1.next().listIterator();
+					while(lt.hasNext())
+					{
+					%>
 					<tbody>
 						<tr>
-<%
-                 String productImagePath = res.getString("productImagePath");
-				if(productImagePath == null)
-					productImagePath = "images/" + "prdouctplaceholder.jpg";
-%>
-							<td style="width:150px"><img class="" height="70px" src="<%=productImagePath %>" alt="Card image cap"></td>
-							<td style="vertical-align:middle"><%=res.getString("productName") %></td>
-							<td style="vertical-align:middle"><%= getDiscountedPrice(res.getInt("productPrice"),res.getInt("productDiscount")) %></td>
-							<td style="vertical-align:middle"><%= res.getString("productSize") %></td>
-							
+							<td style="width:150px"><img class="" height="70px" src="<%=lt.next()%>" alt="Card image cap"></td>
+							<td style="vertical-align:middle"><%=lt.next()%></td>
+							<td style="vertical-align:middle"><%= Integer.parseInt(lt.next())%></td>
+							<td style="vertical-align:middle"><%=lt.next()%></td>
 							<td style="vertical-align:middle">
 							<form action="changeProductStatus">
-							<input type="hidden" name="orderId" value= <%= res.getString("orderId") %> >
-							<button  class="btn btn-danger btn-sm"><span style="font-size:22px;font-weight:bold;color:white;"><%= res.getString("productStatus") %></span>
+							<input type="hidden" name="orderId" value= <%= Integer.parseInt(lt.next())%> >
+							<button  class="btn btn-danger btn-sm"><span style="font-size:22px;font-weight:bold;color:white;"><%=lt.next()%></span>
 							 </button>
 							</form>
 							</td>
@@ -87,57 +71,7 @@ ResultSet res = statement.executeQuery();
 						
 						<%
 					}
-					%>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div><br>
-</div>
-
-<%
-statement = con.prepareStatement("select * from orders where productSoldBy=?  and productStatus=?");
-statement.setString(1, session.getAttribute("adminEmail").toString());
-statement.setString(2,"placed");
-res = statement.executeQuery();
-%>
-&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-<Strong class="btn btn-info btn-sm">Placed Order:-</Strong>
-<div class="container">
-	<div class="card">
-		<div class="card-body">
-			<div>
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th >Product</th>
-							<th>Name</th>
-							<th>Price</th>
-							<th>Size</th>
-							<th>status</th>
-						</tr>
-					</thead>
-					<%
-                        while(res.next())
-                      {
-	                %>
-					<tbody>
-						<tr>
-<%
-                 String productImagePath = res.getString("productImagePath");
-				if(productImagePath == null)
-					productImagePath = "images/" + "prdouctplaceholder.jpg";
-%>
-							<td style="width:150px"><img class="" height="70px" src="<%=productImagePath %>" alt="Card image cap"></td>
-							<td style="vertical-align:middle"><%=res.getString("productName") %></td>
-							<td style="vertical-align:middle"><%= getDiscountedPrice(res.getInt("productPrice"),res.getInt("productDiscount")) %></td>
-							<td style="vertical-align:middle"><%= res.getString("productSize") %></td>
-							<td style="vertical-align:middle"><span style="font-size:22px;font-weight:bold;color:blue" ><%= res.getString("productStatus") %></span></td>
-						</tr>
-						
-						<%
 					}
-                 con.close();
 					%>
 					</tbody>
 				</table>

@@ -69,7 +69,7 @@
 </nav>
 <br><br>
            <%
-           ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("footWear");
+           ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("productDetails");
        	ListIterator<ArrayList<String>> lt1 = list.listIterator();
        	while(lt1.hasNext())
        	{
@@ -98,6 +98,7 @@
 						      	<option>Medium</option>  
 						      	<option>Large</option> 
 		   </select><br>
+		   <input name="productCount" class="form-control" placeholder="how many product you wanna have" required>
 			<p id='addtocarterror' style='color:red'></p>
 			<button type="submit" class="btn btn-md btn-info"><i class="fa fa-shopping-cart"></i>&nbsp&nbspAdd item to cart</button>
 			</form>

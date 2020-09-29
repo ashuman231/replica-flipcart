@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.sql.*"%>
+    pageEncoding="ISO-8859-1" import="java.util.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,66 +107,50 @@ span.price {
 <br><br>
 
 <div class=" container">
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th colspan="2" scope="col">Product</th>
-      <th scope="col">Price</th>
-      <th scope="col">Size</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  
-<%!
-public String getDiscountedPrice(int op, int d){
-	int dp = op - (op*d)/100;
-	return dp+"";
-}
-%>
-  <%
-  Class.forName("com.mysql.jdbc.Driver");
-  Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-  PreparedStatement statement = con.prepareStatement("select * from carts where cartEmail=?");
-  statement.setString(1, session.getAttribute("userEmail").toString());
-  ResultSet rs = statement.executeQuery();
-  int total = 0;
-  %>
-    <%
-       	while(rs.next()){
-       		%>
-			<%
-			PreparedStatement statement1 = con.prepareStatement("select * from products where productId=?");
-			statement1.setString(1, rs.getString(3));
-			ResultSet rs1 = statement1.executeQuery();
-			rs1.next();
-			total += Integer.parseInt(getDiscountedPrice(rs1.getInt(10),rs1.getInt(11)));
-			%>
-			<tr>
-			<%String productImagePath = rs1.getString(12);
-				if(productImagePath == null)
-					productImagePath = "images/" + "prdouctplaceholder.jpg";
-				%>
-			<td style="width:150px"><img class="card-img-top" height="120px" src="<%=productImagePath %>" alt="Card image cap"></td>
-			<td style="vertical-align:middle"><%=rs1.getString(2) %></td>
-			<td style="vertical-align:middle">$<%=getDiscountedPrice(rs1.getInt(10),rs1.getInt(11)) %></td>
-			<td style="vertical-align:middle"><%=rs.getString(4) %></td>
-			<td><form action="deleteFromCart" class="btn btn-sm btn-danger">
-						      <input type="hidden" name="cartId" value=<%=rs.getString(1) %> /> 
-						        <button type="submit">Remove</button>
-						         </form>
-			</td>
-			</tr>										
-       		<%
-       	}
-    con.close();
-       	%>
-  </tbody>
-</table>
-<br>
-<p class="text-right">
-<span style="font-size:22px;font-weight:bold;color:red">Total:</span>&nbsp&nbsp&nbsp<span style="font-size:28px; color:#32127A; font-weight:bold">$<%=total %>.00</span>
-</p>
+ <div class="modal-body">
+		        	<table class="table table-hover">
+					    <thead>
+					      <tr>
+					        <th>Image</th>
+					        <th>Product</th>
+					        <th>Price</th>
+					        <th>Size</th>
+					        <th>Count</th>
+					        <th></th>
+					      </tr>
+					    </thead>
+					    <tbody>
+		        		<%
+		        		int total =0;
+		        		ArrayList<ArrayList<String>>list = (ArrayList<ArrayList<String>>)session.getAttribute("userCart");
+		        		ListIterator<ArrayList<String>> lt1 = list.listIterator();
+		        		while(lt1.hasNext())
+		        		{
+		        		ListIterator<String>lt = lt1.next().listIterator();
+		        		while(lt.hasNext())
+		        		{
+                          %>
+						<tr>
+						<td style="width:150px"><img class="" height="70px" src="<%=lt.next()%>" alt="Card image cap"></td>
+						<td><%=lt.next()%></td>  <%-- name --%>
+						<% int price = Integer.parseInt(lt.next()); %>
+						
+						<td>$<%=price%></td>
+						<td><%=lt.next()%></td>  <%-- size --%>
+						<% int count = Integer.parseInt(lt.next()); %>
+						<td><%=count%></td>  <%-- count --%>
+					    <%
+					    total += price*count; %>
+					   <%  lt.next();%>  <%-- extra value cause we have to call it --%>
+					 	</tr>										
+		        		<%
+		        	    }
+		        		}
+		        	%>
+		        	<span style="font-weight:bold;color:red">Total:</span>&nbsp&nbsp&nbsp<span style="font-size:22px; color:#32127A; font-weight:bold">$<%=total %></span>
+		        	</tbody>
+		        	</table>
+		        </div>
 </div>
 <br><br>
 

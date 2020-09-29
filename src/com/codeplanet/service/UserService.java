@@ -93,4 +93,8 @@ AdminDao adminDao;
 		userDao.userOrder(req);
 		
 	}
+	public void adminOrder(HttpServletRequest req) throws ClassNotFoundException, SQLException {
+		adminDao.adminOrder(req);
+		
+	}
 }

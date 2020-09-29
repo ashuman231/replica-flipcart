@@ -95,6 +95,14 @@ UserService userService;
     	userService.adminIndex(req);
     	return "admin-index";
     }
+    @RequestMapping(value="/adminOrder" )
+    public String adminOrder(HttpServletRequest req) throws SQLException, ServletException, IOException, ClassNotFoundException
+    {
+    	
+    	userService.adminOrder(req);
+    	return "adminOrder";
+    }
+    
     
   
   

@@ -84,10 +84,11 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
 
            Class.forName("com.mysql.jdbc.Driver");
            Connection con = jdbcTemplate.getDataSource().getConnection();
-				PreparedStatement statement1 = con.prepareStatement("insert into carts(cartEmail,productId,productSize) values(?,?,?)");
+				PreparedStatement statement1 = con.prepareStatement("insert into carts(cartEmail,productId,productSize,productCount) values(?,?,?,?)");
 				statement1.setString(1, req.getSession().getAttribute("userEmail").toString());
 				statement1.setInt(2, Integer.parseInt(req.getParameter("productId")));
 				statement1.setString(3, req.getParameter("productSize"));
+				statement1.setInt(4,Integer.parseInt(req.getParameter("productCount")));
 				statement1.executeUpdate();
 		       userCart(req);
           }
@@ -96,23 +97,23 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
           {
         	  Class.forName("com.mysql.jdbc.Driver");
               Connection con = jdbcTemplate.getDataSource().getConnection();
-   				PreparedStatement statement1 = con.prepareStatement("DELETE FROM carts WHERE cartId ="+req.getParameter("cartId"));
-   				statement1.executeUpdate();   
-			userCart(req);
-   				
+   				PreparedStatement statement1 = con.prepareStatement("DELETE FROM carts WHERE cartId=?");
+   				statement1.setInt(1,Integer.parseInt(req.getParameter("cartId")));
+   				statement1.execute();
+			    userCart(req);
           }
 		public void payment(HttpServletRequest req) throws ClassNotFoundException, SQLException {
 			 Class.forName("com.mysql.jdbc.Driver");
              Connection con = jdbcTemplate.getDataSource().getConnection();
              // for insert order into order table of user
-             PreparedStatement statemnet1 = con.prepareStatement("SELECT products.productName,products.productImagePath,products.productSoldBy,products.productPrice,products.productDiscount,carts.productSize\r\n" + 
+             PreparedStatement statemnet1 = con.prepareStatement("SELECT products.productName,products.productImagePath,products.productSoldBy,products.productPrice,carts.productCount,carts.productSize\r\n" + 
              		"FROM carts\r\n" + 
-             		"JOIN products ON carts.productId=products.productId and cartEmail=?;");
+             		"JOIN products on carts.productId=products.productId where cartEmail=?");
              statemnet1.setString(1,(String) req.getSession().getAttribute("userEmail"));
              ResultSet res = statemnet1.executeQuery();
              while(res.next())
              {    	 
-            	 PreparedStatement statement = con.prepareStatement("insert into orders(userEmail,productName,productSize,productImagePath,productStatus,productSoldBy,productPrice,productDiscount) values(?,?,?,?,?,?,?,?)");
+            	 PreparedStatement statement = con.prepareStatement("insert into orders(userEmail,productName,productSize,productImagePath,productStatus,productSoldBy,productPrice,productCount) values(?,?,?,?,?,?,?,?)");
      			statement.setString(1,(String)req.getSession().getAttribute("userEmail"));
      			statement.setString(2,res.getString("productName"));
      			statement.setString(3,res.getString("productSize"));
@@ -120,13 +121,15 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
      			statement.setString(5,"pending");
      			statement.setString(6,res.getString("productSoldBy"));
      			statement.setString(7, res.getString("productPrice"));
-     			statement.setString(8, res.getString("productDiscount"));	
+     			statement.setString(8, res.getString("productCount"));	
      		    statement.executeUpdate();	
              }
+             userOrder(req);
              // to delete orders from cart of the user 
              PreparedStatement statement2  = con.prepareStatement("delete from carts where cartEmail=?");
              statement2.setString(1,(String)req.getSession().getAttribute("userEmail"));
              statement2.executeUpdate();
+             userCart(req);
 		}
 		public void userIndex(HttpServletRequest req, HttpServletResponse res) throws SQLException, ClassNotFoundException {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -143,10 +146,10 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
 			req.getSession().setAttribute("topWear", topWear);
 			
 			
-			statement = con.prepareStatement("select * from products where productCategory='Bottamwear' order by productId desc limit 4");
+			statement = con.prepareStatement("select * from products where productCategory='Bottomwear' order by productId desc limit 4");
 			res1 = statement.executeQuery();
 			ArrayList<ArrayList<String>>bottamWear =  attributeForUserIndex(res1);
-			req.getSession().setAttribute("bottamWear", bottamWear);
+			req.getSession().setAttribute("bottomWear", bottamWear);
 			
 		}
 		private ArrayList<ArrayList<String>> attributeForUserIndex(ResultSet res) throws SQLException
@@ -156,15 +159,11 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
 			while(res.next())
 			{
 				ArrayList<String>temp = new ArrayList<String>();
-				temp.add(Integer.toString(res.getInt(1)));
-				temp.add(res.getString(8)); // Image
-				temp.add(res.getString(2)); // name
-				temp.add(res.getString(3)); // desc
-				temp.add(Integer.toString(res.getInt(7)));  // price
-				temp.add(res.getString(4));
-				temp.add(res.getString(5));
-				temp.add(res.getString(6));
-				
+				temp.add(Integer.toString(res.getInt("productId"))); // productId
+				temp.add(res.getString("productImagePath")); // Image
+				temp.add(res.getString("productName")); // name
+				temp.add(res.getString("productDescription")); // desc
+				temp.add(Integer.toString(res.getInt("productPrice")));  // price
 				list.add(temp);
 			}
 	     return list;
@@ -172,7 +171,7 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
 		public void userCart(HttpServletRequest req) throws ClassNotFoundException, SQLException {
 			Class.forName("com.mysql.jdbc.Driver");
 			 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-			  PreparedStatement statement = con.prepareStatement("select * from carts Inner join products products.productId = carts.productId where cartEmail=?");
+			  PreparedStatement statement = con.prepareStatement("select * from carts Inner join products on products.productId = carts.productId where cartEmail=?");
 			  statement.setString(1,(String) req.getSession().getAttribute("userEmail"));
 			  ResultSet res1 = statement.executeQuery();
 			  ArrayList<ArrayList<String>>userCart =  attributeForUserCart(res1);
@@ -190,11 +189,11 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
 				temp.add(res.getString("productName")); // name
 				temp.add(Integer.toString(res.getInt("productPrice")));  // price
 				temp.add(res.getString("productSize"));  // Size
-				temp.add(Integer.toString(res.getInt("products.productId")));
+				temp.add(Integer.toString(res.getInt("productCount"))); // count
+				temp.add(Integer.toString(res.getInt("carts.cartId")));
 				list.add(temp);
 			}
 	     return list;
-	     
 		}
 		public void productDetails(HttpServletRequest req) throws ClassNotFoundException, SQLException {
 			    Class.forName("com.mysql.jdbc.Driver");
@@ -208,8 +207,9 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
 		public void search(HttpServletRequest req) throws SQLException, ClassNotFoundException {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/amazon","root","ashu1234");
-			PreparedStatement statement = con.prepareStatement("select * from products where productName=?");
-			statement.setString(1,req.getParameter("productSearch"));
+			PreparedStatement statement = con.prepareStatement("select * from products where productName LIKE ?");
+			String p = "%" + req.getParameter("productSearch") + "%" ;
+			statement.setString(1,p);
 			ResultSet res1 = statement.executeQuery();
 			ArrayList<ArrayList<String>>productSearch =  attributeForUserIndex(res1);
 			req.getSession().setAttribute("productSearch",productSearch);
@@ -235,10 +235,10 @@ public boolean userLogin(User user, HttpSession session) throws SQLException {
 				temp.add(res.getString("productName")); // name
 				temp.add(Integer.toString(res.getInt("productPrice")));  // price
 				temp.add(res.getString("productSize"));  // Size
-				temp.add(Integer.toString(res.getInt("productStatus"))); // status
+				temp.add(res.getString("productStatus")); // status
+				temp.add(Integer.toString(res.getInt("productCount"))); // count
 				list.add(temp);
 			}
 	     return list;
-	     
 		}
 }

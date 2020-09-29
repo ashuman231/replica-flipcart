@@ -3,7 +3,6 @@ package com.codeplanet.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,11 +75,11 @@ UserService userService;
 		userService.payment(req);
 		return "userOrder";	
 	}
-	@RequestMapping(value="/search")
+	@RequestMapping(value="/productSearch")
 	public String search(HttpServletRequest req,HttpServletResponse res) throws ServletException, IOException, ClassNotFoundException, SQLException 
 	{
 	userService.search(req);
-	return "search";
+	return "productSearch";
 	}
 	/*
 	@RequestMapping(value="/userIndex")
@@ -113,6 +112,16 @@ UserService userService;
 	{
 	 userService.userOrder(req);
 	 return "userOrder";
+	}
+	@RequestMapping(value="/user-login-signup")
+	public String userLoginSignup(HttpServletRequest req) throws ServletException, IOException, ClassNotFoundException, SQLException 
+	{
+	 return "user-login-signup";
+	}
+	@RequestMapping(value="/checkout")
+	public String checkout(HttpServletRequest req) throws ServletException, IOException, ClassNotFoundException, SQLException 
+	{
+	 return "checkout";
 	}
 	
 }

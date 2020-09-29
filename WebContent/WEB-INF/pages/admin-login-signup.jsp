@@ -35,6 +35,7 @@ if(session.getAttribute("adminEmail") != null){
 
         <!-- Top content -->
         <div class="top-content">
+        
         	<h1 style="color:blue; font-size:50px;">WELCOME ON OUR WEBPAGES(Flipcart Lite)</h1>
         	<h2 style="color:red; font-size:30px;"><strong> Login and Signup page for sellers.</strong></h2>
             <div class="inner-bg">
@@ -69,21 +70,6 @@ if(session.getAttribute("adminEmail") != null){
 			                    </div>
 		                    </div>
 		                
-		                	<div class="social-login">
-	                        	<h3>...or login with:</h3>
-	                        	<div class="social-login-buttons">
-		                        	<a class="btn btn-link-1 btn-link-1-facebook" href="#">
-		                        		<i class="fa fa-facebook"></i> Facebook
-		                        	</a>
-		                        	<a class="btn btn-link-1 btn-link-1-twitter" href="#">
-		                        		<i class="fa fa-twitter"></i> Twitter
-		                        	</a>
-		                        	<a class="btn btn-link-1 btn-link-1-google-plus" href="#">
-		                        		<i class="fa fa-google-plus"></i> Google Plus
-		                        	</a>
-	                        	</div>
-	                        </div>
-	                        
                         </div>
                         
                         <div class="col-sm-5">

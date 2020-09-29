@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <%
-if(session.getAttribute("sessionAdminEmail") != null){
+if(session.getAttribute("userEmail") != null){
 	response.sendRedirect("user-index.jsp");
 	return;
 }
@@ -37,10 +37,11 @@ if(session.getAttribute("sessionAdminEmail") != null){
         <div class="top-content">
         	<h1 style="color:blue; font-size:50px;">WELCOME ON OUR WEBPAGES(Flipcart Lite)</h1>
         	<h2 style="color:red; font-size:30px;"><strong> Login and Signup page for users.</strong></h2>
+        	
             <div class="inner-bg">
                 <div class="container">
-                
-                    
+               
+               
                     <div class="row">
                      
                         <div class="col-sm-5">
